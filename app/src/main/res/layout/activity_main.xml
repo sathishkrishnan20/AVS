@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/bg"
+    tools:context="com.example.sathish.avs.MainActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:text="View Member"
+        android:textSize="40sp"
+        android:textColor="#FFF"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:layout_margin="5dp"
+        android:background="@drawable/akil_menu_background"
+        android:id="@+id/viewMember"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:text="Add Member"
+        android:textSize="40sp"
+        android:textColor="#FFFF"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:layout_margin="5dp"
+        android:layout_below="@+id/viewMember"
+        android:background="@drawable/akil_menu_background"
+        android:id="@+id/addMember"/>
+
+<!--
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:id="@+id/akil_menu_image"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/logo_profile"/> -->
+</RelativeLayout>

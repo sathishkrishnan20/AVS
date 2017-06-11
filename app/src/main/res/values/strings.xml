@@ -1,0 +1,51 @@
+<resources>
+    <string name="app_name">AVS</string>
+
+    <string name="err_name">Please Enter valid User Name</string>
+
+    <string name="err_address_place">Enter Place Name</string>
+    <string name="err_address_district">Enter District</string>
+    <string name="err_address_state">Enter Address</string>
+    <string name="err_address_country">Enter Country</string>
+    err_address_district
+    <string name="error_network">Network Error</string>
+
+    <string-array name="Weight">
+        <item>J-D</item>
+        <item>JAN</item>
+        <item>FEB</item>
+        <item>MAR</item>
+        <item>APR</item>
+        <item>MAY</item>
+        <item>JUN</item>
+        <item>JUL</item>
+        <item>SEP</item>
+        <item>OCT</item>
+        <item>NOV</item>
+        <item>DEC</item>
+    </string-array>
+
+    <string-array name="year">
+        <item>2017</item>
+        <item>2018</item>
+        <item>2019</item>
+        <item>2020</item>
+        <item>2021</item>
+        <item>2022</item>
+        <item>2023</item>
+        <item>2024</item>
+        <item>2025</item>
+        <item>2026</item>
+    </string-array>
+
+    <string-array name="bgroup">
+        <item>A +</item>
+        <item>A -</item>
+        <item>B +</item>
+        <item>B -</item>
+        <item>O +</item>
+        <item>O -</item>
+        <item>OB +</item>
+        <item>OB -</item>
+    </string-array>
+</resources>
