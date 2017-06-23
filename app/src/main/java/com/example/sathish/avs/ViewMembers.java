@@ -43,6 +43,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.sathish.avs.util.Network;
 import com.example.sathish.avs.util.NetworkURL;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -85,6 +86,7 @@ public class ViewMembers extends AppCompatActivity {
     String userId ="";
     Button storeDetailsBtn;
     String strAddress = "";
+    String userImageUrl = "";
 
     private ListView searchListView;
     ArrayAdapter searchUserAdapter;
@@ -96,7 +98,7 @@ public class ViewMembers extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_members);
         mGesture = new GestureDetector(this, mOnGesture);
-        //userImage = (ImageView) findViewById(R.id.imageViewShow);
+        userImage = (ImageView) findViewById(R.id.userImage);
         userName = (TextView) findViewById(R.id.userName);
         userUniqueName = (TextView) findViewById(R.id.userUniqueName);
         userEmail = (TextView) findViewById(R.id.userEmail);
@@ -131,8 +133,6 @@ public class ViewMembers extends AppCompatActivity {
                     searchListView.setVisibility(View.GONE);
             }
         });
-
-
 
     }
 
@@ -287,10 +287,23 @@ public class ViewMembers extends AppCompatActivity {
         return value;
     }
 
+    HashMap userMapToUpdate = new HashMap();
+    private static String dbName = "name";
+    private static String dbUniquename = "uniqueName";
+    private static String dbMobile = "mobileNo";
+    private static String dbEmail = "email";
+    private static String dbJob = "job";
+    private static String dbDOB = "dob";
+    private static String dbBloodGroup = "bloodgroup";
+    private static String dbGender = "gender";
+    private static String dbAddress = "address";
+    private static String dbImage = "image";
+
+
     private void setDetailsToUI(int count){
         try {
-
-           userId = String.valueOf(uniqueUserLst.get(count));
+            userId = String.valueOf(uniqueUserLst.get(count));
+            userMapToUpdate.put("userId",userId);
             resultCount = getUserResultFirstCount();
 
             for( resultCount = resultCount; resultCount < result.length(); resultCount++ ) {
@@ -302,31 +315,45 @@ public class ViewMembers extends AppCompatActivity {
                 }
 
                 userUniqueName.setText(responseData.getString("uniqueName"));
+                userMapToUpdate.put(dbUniquename,responseData.getString("uniqueName"));
                 userMobileNo.setText(responseData.getString("mobileNo"));
+                userMapToUpdate.put(dbMobile,responseData.getString("mobileNo"));
                 int masterId = Integer.parseInt(responseData.getString("masterId"));
                 String value = responseData.getString("value");
 
                 switch (masterId) {
                     case 1:
+                        userMapToUpdate.put(dbName,value);
                         userName.setText(value);
                         break;
                     case 2:
+                        userMapToUpdate.put(dbEmail,value);
                         userEmail.setText(value);
                         break;
                     case 3:
+                        userMapToUpdate.put(dbJob,value);
                         //userName.setText(value);
                         break;
                     case 4:
+                        userMapToUpdate.put(dbDOB,value);
                         userDob.setText(value);
                         break;
                     case 5:
+                        userMapToUpdate.put(dbBloodGroup,value);
                         userBloodGroup.setText(value);
                         break;
                     case 6:
+                        userMapToUpdate.put(dbGender,value);
                         userGender.setText(value);
                         break;
                     case 7:
+                        userMapToUpdate.put(dbAddress,value);
                         strAddress = value;
+                        break;
+                    case 8:
+                        userMapToUpdate.put(dbImage,value);
+                        userImageUrl = value;
+                        Picasso.with(getApplicationContext()).load(value).error(R.drawable.error).placeholder(R.drawable.placeholder).resize(600,360).into(userImage); //this is optional the image to display while the url image is downloading.error(0)         //this is also optional if some error has occurred in downloading the image this image would be displayed
                         break;
                 }
             }
@@ -717,6 +744,15 @@ public class ViewMembers extends AppCompatActivity {
             alertDialog.show();
 
         }
+        else if(id == R.id.action_edit) {
+        try {
+            Intent editUserPage = new Intent(this, UpdateUser.class);
+            editUserPage.putExtra("userDetailsHashMap", userMapToUpdate);
+            startActivity(editUserPage);
+        }catch (Exception e){
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+        }
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -801,6 +837,8 @@ public class ViewMembers extends AppCompatActivity {
         userGender.setText("");
         layout.removeAllViewsInLayout();
         layout.removeAllViews();
+        userMapToUpdate.clear();
+
     }
 
     private String getDateTime() {

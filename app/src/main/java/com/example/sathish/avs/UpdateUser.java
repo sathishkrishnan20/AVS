@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
@@ -31,6 +30,7 @@ import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.example.sathish.avs.util.Network;
 import com.example.sathish.avs.util.NetworkURL;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -40,10 +40,11 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AddMembers extends AppCompatActivity  {
+public class UpdateUser extends AppCompatActivity {
+
 
     private EditText mUserName, mUniqueName, mMoileNo, mEmail, mJob,mDOB,
-                     mAddresshomeNo,mAddressPlace, mAddressStreet, mAddressDistrict, maddressState, mAddressCountry, mAddressPinCode;
+            mAddresshomeNo,mAddressPlace, mAddressStreet, mAddressDistrict, maddressState, mAddressCountry, mAddressPinCode;
     private Spinner mBloodGroup;
     private RadioGroup mGenderGroup;
     Button register;
@@ -64,40 +65,95 @@ public class AddMembers extends AppCompatActivity  {
 
 
     private String strName, strUniqueName, strMobileNo, strEmail, strJob,strDOB, strBloodGroup, strAddress, strGender;
+   private static String networkUrlForUpdateMember = NetworkURL.url+"updateMember.php";
 
-    private static String networkUrlForAddMember = NetworkURL.url+"addMember.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_members);
-
-        mUserName = (EditText) findViewById(R.id.name1);
-        mUniqueName = (EditText) findViewById(R.id.uniqueUserName1);
-        mMoileNo = (EditText) findViewById(R.id.mobileNo1);
-
-        mEmail = (EditText) findViewById(R.id.email1);
-        mJob = (EditText) findViewById(R.id.job1);
-        mDOB = (EditText) findViewById(R.id.DOB1);
-        mJob = (EditText) findViewById(R.id.job1);
-
-         mBloodGroup = (Spinner) findViewById(R.id.bgspinner);
-         mGenderGroup = (RadioGroup)findViewById(R.id.gender);
+        setContentView(R.layout.activity_update_user);
 
 
-        mAddresshomeNo = (EditText) findViewById(R.id.userAddressHomeNo);
-        mAddressPlace = (EditText) findViewById(R.id.userAddressPlace);
-        mAddressStreet = (EditText) findViewById(R.id.userAddressStreet);
-        mAddressDistrict = (EditText) findViewById(R.id.userAddressDistrict);
-        maddressState = (EditText) findViewById(R.id.userAddressState);
-        mAddressCountry = (EditText) findViewById(R.id.userAddressCountry);
-        mAddressPinCode = (EditText) findViewById(R.id.userAddressPincode);
+        mUserName = (EditText) findViewById(R.id.name1_update);
+        mUniqueName = (EditText) findViewById(R.id.uniqueUserName1_update);
+        mMoileNo = (EditText) findViewById(R.id.mobileNo1_update);
+
+        mEmail = (EditText) findViewById(R.id.email1_update);
+        mJob = (EditText) findViewById(R.id.job1_update);
+        mDOB = (EditText) findViewById(R.id.DOB1_update);
+        mJob = (EditText) findViewById(R.id.job1_update);
+
+        mBloodGroup = (Spinner) findViewById(R.id.bgspinner_updtate);
+        mGenderGroup = (RadioGroup)findViewById(R.id.gender_update);
+
+        RadioButton radioButtonForMale = (RadioButton) findViewById(R.id.Male_update);
+        RadioButton radioButtonForFeMale = (RadioButton) findViewById(R.id.FeMale_update);
+
+        mAddresshomeNo = (EditText) findViewById(R.id.userAddressHomeNo_update);
+        mAddressPlace = (EditText) findViewById(R.id.userAddressPlace_update);
+        mAddressStreet = (EditText) findViewById(R.id.userAddressStreet_update);
+        mAddressDistrict = (EditText) findViewById(R.id.userAddressDistrict_update);
+        maddressState = (EditText) findViewById(R.id.userAddressState_update);
+        mAddressCountry = (EditText) findViewById(R.id.userAddressCountry_update);
+        mAddressPinCode = (EditText) findViewById(R.id.userAddressPincode_updte);
 
 
-        register = (Button) findViewById(R.id.registerBtn1);
-        chooseImage = (Button) findViewById(R.id.chooseImageFileBtn);
-        userImageView = (ImageView) findViewById(R.id.userImageView);
+        register = (Button) findViewById(R.id.registerBtn1_update);
+        chooseImage = (Button) findViewById(R.id.chooseImageFileBtn_update);
+        userImageView = (ImageView) findViewById(R.id.userImageView_update);
 
 
+        HashMap userDetails = (HashMap) getIntent().getExtras().get("userDetailsHashMap");
+        mUserName.setText(userDetails.get(dbName).toString());
+        mUniqueName.setText(userDetails.get(dbUniquename).toString());
+        mMoileNo.setText(userDetails.get(dbMobile).toString());
+        mEmail.setText(userDetails.get(dbEmail).toString());
+        mJob.setText(userDetails.get(dbJob).toString());
+        mDOB.setText(userDetails.get(dbDOB).toString());
+
+        if(userDetails.get(dbGender).toString().equals("M"))
+            radioButtonForMale.setChecked(true);
+        else if(userDetails.get(dbGender).toString().equals("F"))
+            radioButtonForFeMale.setChecked(true);
+
+        int BloodGroupPosition = 0;
+        switch (userDetails.get(dbBloodGroup).toString()) {
+            case "A+":
+                BloodGroupPosition = 0;
+                break;
+            case "A-":
+                BloodGroupPosition = 1;
+                break;
+            case "B+":
+                BloodGroupPosition = 2;
+                break;
+            case "B-":
+                BloodGroupPosition = 3;
+                break;
+            case "O+":
+                BloodGroupPosition = 4;
+                break;
+            case "O-":
+                BloodGroupPosition = 5;
+                break;
+            case "OB+":
+                BloodGroupPosition = 6;
+                break;
+            case "OB-":
+                BloodGroupPosition = 7;
+                break;
+        }
+
+        mBloodGroup.setSelection(BloodGroupPosition);
+
+        mAddresshomeNo.setText(userDetails.get(dbAddress).toString().split(",")[0]);
+        mAddressStreet.setText(userDetails.get(dbAddress).toString().split(",")[1]);
+        mAddressPlace.setText(userDetails.get(dbAddress).toString().split(",")[2]);
+        mAddressDistrict.setText(userDetails.get(dbAddress).toString().split(",")[3]);
+        maddressState.setText(userDetails.get(dbAddress).toString().split(",")[4]);
+        mAddressCountry.setText(userDetails.get(dbAddress).toString().split(",")[5]);
+        mAddressPinCode.setText(userDetails.get(dbAddress).toString().split(",")[6]);
+
+        Picasso.with(getApplicationContext()).load(userDetails.get(dbImage).toString()).error(R.drawable.error).placeholder(R.drawable.placeholder).resize(600,360).into(userImageView); //this is optional the image to display while the url image is downloading.error(0)         //this is also optional if some error has occurred in downloading the image this image would be displayed
 
         chooseImage.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -106,10 +162,12 @@ public class AddMembers extends AppCompatActivity  {
         });
         register.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-               validationCheck();
+                validationCheck();
             }
 
         });
+
+
     }
 
     private int PICK_IMAGE_REQUEST = 1;
@@ -150,80 +208,76 @@ public class AddMembers extends AppCompatActivity  {
     }
 
 
-
-
-
-
     public void validationCheck() {
 
-            strName = mUserName.getText().toString().trim();
-            strUniqueName = mUniqueName.getText().toString().trim();
-            strMobileNo = mMoileNo.getText().toString().trim();
-            strEmail = mEmail.getText().toString().trim();
-            strJob = mJob.getText().toString().trim();
-            strDOB =mDOB.getText().toString().trim();
+        strName = mUserName.getText().toString().trim();
+        strUniqueName = mUniqueName.getText().toString().trim();
+        strMobileNo = mMoileNo.getText().toString().trim();
+        strEmail = mEmail.getText().toString().trim();
+        strJob = mJob.getText().toString().trim();
+        strDOB =mDOB.getText().toString().trim();
 
-            int selectedId= mGenderGroup.getCheckedRadioButtonId();
-            RadioButton radioSexButton=(RadioButton)findViewById(selectedId);
-            strGender = radioSexButton.getText().toString();
-            strBloodGroup = mBloodGroup.getSelectedItem().toString();
+        int selectedId= mGenderGroup.getCheckedRadioButtonId();
+        RadioButton radioSexButton=(RadioButton)findViewById(selectedId);
+        strGender = radioSexButton.getText().toString();
+        strBloodGroup = mBloodGroup.getSelectedItem().toString();
 
-            String strHomeNo = mAddresshomeNo.getText().toString().trim();
-            String strStreet = mAddressStreet.getText().toString().trim();
-            String strPlace = mAddressPlace.getText().toString().trim();
-            String strDistrict = mAddressDistrict.getText().toString().trim();
+        String strHomeNo = mAddresshomeNo.getText().toString().trim();
+        String strStreet = mAddressStreet.getText().toString().trim();
+        String strPlace = mAddressPlace.getText().toString().trim();
+        String strDistrict = mAddressDistrict.getText().toString().trim();
 
-            String strState = maddressState.getText().toString().trim();
-            String strCountry = mAddressCountry.getText().toString().trim();
-            String strPincode = mAddressPinCode.getText().toString().trim();
+        String strState = maddressState.getText().toString().trim();
+        String strCountry = mAddressCountry.getText().toString().trim();
+        String strPincode = mAddressPinCode.getText().toString().trim();
 
-            Network network = new Network();
-            if (!network.isOnline(AddMembers.this)) {
-                Toast.makeText(AddMembers.this, "No Network Connection", Toast.LENGTH_SHORT).show();
-                return;
-            }
+        Network network = new Network();
+        if (!network.isOnline(UpdateUser.this)) {
+            Toast.makeText(UpdateUser.this, "No Network Connection", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-            if(strHomeNo.isEmpty())
-                strHomeNo = "Null";
-            if(strStreet.isEmpty())
-                strStreet = "Null";
+        if(strHomeNo.isEmpty())
+            strHomeNo = "Null";
+        if(strStreet.isEmpty())
+            strStreet = "Null";
 
-            AwesomeValidation mAwesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
-            mAwesomeValidation.addValidation(AddMembers.this, R.id.name1, "[a-zA-Z .]+", R.string.err_name);
-            mAwesomeValidation.addValidation(AddMembers.this, R.id.userAddressPlace, "[a-zA-Z .]+", R.string.err_address_place);
-            mAwesomeValidation.addValidation(AddMembers.this, R.id.userAddressDistrict, "[a-zA-Z .]+", R.string.err_address_district);
-            mAwesomeValidation.addValidation(AddMembers.this, R.id.userAddressState, "[a-zA-Z .]+", R.string.err_address_state);
-            mAwesomeValidation.addValidation(AddMembers.this, R.id.userAddressCountry, "[a-zA-Z .]+", R.string.err_address_country);
+        AwesomeValidation mAwesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
+        mAwesomeValidation.addValidation(UpdateUser.this, R.id.name1, "[a-zA-Z .]+", R.string.err_name);
+        mAwesomeValidation.addValidation(UpdateUser.this, R.id.userAddressPlace, "[a-zA-Z .]+", R.string.err_address_place);
+        mAwesomeValidation.addValidation(UpdateUser.this, R.id.userAddressDistrict, "[a-zA-Z .]+", R.string.err_address_district);
+        mAwesomeValidation.addValidation(UpdateUser.this, R.id.userAddressState, "[a-zA-Z .]+", R.string.err_address_state);
+        mAwesomeValidation.addValidation(UpdateUser.this, R.id.userAddressCountry, "[a-zA-Z .]+", R.string.err_address_country);
 
 
-            if (strName.isEmpty()) {
-                Toast.makeText(this, "Please enter Valid Name", Toast.LENGTH_LONG).show();
-                return;
-            }
+        if (strName.isEmpty()) {
+            Toast.makeText(this, "Please enter Valid Name", Toast.LENGTH_LONG).show();
+            return;
+        }
 
-            if (strUniqueName.isEmpty()) {
-                Toast.makeText(this, "Please enter UserName", Toast.LENGTH_LONG).show();
-                return;
-            }
-            if (strMobileNo.isEmpty()) {
-                Toast.makeText(this, "Please enter the Mobile Number", Toast.LENGTH_LONG).show();
-                return;
-            }
-            if (strPincode.isEmpty()) {
-                Toast.makeText(this, "Please enter the PinCode", Toast.LENGTH_LONG).show();
-                return;
-            }
-            if (imageUploadCount == 0) {
-                Toast.makeText(this, "Please Choose the the Image", Toast.LENGTH_LONG).show();
-                return;
-            }
+        if (strUniqueName.isEmpty()) {
+            Toast.makeText(this, "Please enter UserName", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (strMobileNo.isEmpty()) {
+            Toast.makeText(this, "Please enter the Mobile Number", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (strPincode.isEmpty()) {
+            Toast.makeText(this, "Please enter the PinCode", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (imageUploadCount == 0) {
+            Toast.makeText(this, "Please Choose the the Image", Toast.LENGTH_LONG).show();
+            return;
+        }
 
         strAddress = strHomeNo + "," + strStreet + "," +strPlace + "," + strDistrict + "," + strState + "," +strCountry + ","+strPincode;
 
 
-            if(mAwesomeValidation.validate()) {
-              registerUser();
-            }
+        if(mAwesomeValidation.validate()) {
+            registerUser();
+        }
 
 
 
@@ -234,7 +288,7 @@ public class AddMembers extends AppCompatActivity  {
     public void registerUser()
     {
 
-        final ProgressDialog loading =new ProgressDialog(AddMembers.this);
+        final ProgressDialog loading =new ProgressDialog(UpdateUser.this);
         loading.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         loading.setTitle("Please Wait..");
         loading.setMessage("Loading.........");
@@ -258,7 +312,7 @@ public class AddMembers extends AppCompatActivity  {
             progressStatus = 1;
             return;
         }
-        StringRequest stringRequest=new StringRequest(Request.Method.POST, networkUrlForAddMember,
+        StringRequest stringRequest=new StringRequest(Request.Method.POST, networkUrlForUpdateMember,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response)
@@ -331,5 +385,10 @@ public class AddMembers extends AppCompatActivity  {
             e.printStackTrace();
         }
     }
+
+
+
+
+
 
 }

@@ -5,5 +5,5 @@ package com.example.sathish.avs.util;
  */
 
 public class NetworkURL {
-    public static String url = "http://ayyavaikundaswamy.com/avs/php/";
+    public static String url = "http://ayyavaikundaswamy.com/avs/app/";
 }

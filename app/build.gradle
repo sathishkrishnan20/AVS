@@ -31,5 +31,6 @@ dependencies {
     compile 'com.basgeekball:awesome-validation:2.0'
     compile 'com.mcxiaoke.volley:library:1.0.19'
     compile 'com.android.support:recyclerview-v7:25.0.1'
+    compile 'com.squareup.picasso:picasso:2.5.2'
     testCompile 'junit:junit:4.12'
 }

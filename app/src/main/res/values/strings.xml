@@ -7,7 +7,7 @@
     <string name="err_address_district">Enter District</string>
     <string name="err_address_state">Enter Address</string>
     <string name="err_address_country">Enter Country</string>
-    err_address_district
+
     <string name="error_network">Network Error</string>
 
     <string-array name="Weight">
@@ -39,13 +39,14 @@
     </string-array>
 
     <string-array name="bgroup">
-        <item>A +</item>
-        <item>A -</item>
-        <item>B +</item>
-        <item>B -</item>
-        <item>O +</item>
-        <item>O -</item>
-        <item>OB +</item>
-        <item>OB -</item>
+        <item>A+</item>
+        <item>A-</item>
+        <item>B+</item>
+        <item>B-</item>
+        <item>O+</item>
+        <item>O-</item>
+        <item>OB+</item>
+        <item>OB-</item>
     </string-array>
+    <string name="title_activity_update_user_details">UpdateUserDetails</string>
 </resources>

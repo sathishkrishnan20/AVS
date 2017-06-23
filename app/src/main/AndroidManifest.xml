@@ -20,7 +20,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".AddMembers" />
-        <activity android:name=".ViewMembers"></activity>
+        <activity android:name=".ViewMembers" />
+        <activity android:name=".UpdateUser"></activity>
     </application>
 
 </manifest>
